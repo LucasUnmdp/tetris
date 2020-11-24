@@ -69,12 +69,13 @@ public class Pieces {
             pf=drawPiece(pf,actualP.getCoord());
             engine.setPlayField(pf);
         }catch (CantRotException e) {
-            Coordinates[] coords=actualP.getCopyCoord();
-            this.actualP.wallKick(pf);
-            pf=cleanPiece(pf,coords);
-            pf=drawPiece(pf,actualP.getCoord());
-            engine.setPlayField(pf);
-            rot(direction);
+            Coordinates[]coords=actualP.getCopyCoord();
+            if(this.actualP.wallKick(pf)) {
+                pf = cleanPiece(pf, coords);
+                pf = drawPiece(pf, actualP.getCoord());
+                engine.setPlayField(pf);
+                rot(direction);
+            }
         }
     }
 

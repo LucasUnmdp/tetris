@@ -66,16 +66,20 @@ public abstract class Tetrimino {
                 break;
         }
     }
-    public void wallKick(int[][] pf){
+    public boolean wallKick(int[][] pf){
+        boolean flag=false;
         if(canMoveLeft(pf)){
+            flag=true;
             for (int x = 0; x < 4; x++)
                 coord[x].sub(0, 1);
         }else{
             if(canMoveRight(pf)){
+                flag=true;
                 for (int x = 0; x < 4; x++)
                     coord[x].sum(0, 1);
             }
         }
+        return flag;
     }
 
     private boolean canMoveDown(int[][]pf){
