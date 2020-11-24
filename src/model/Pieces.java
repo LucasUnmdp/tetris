@@ -23,6 +23,7 @@ public class Pieces {
     private boolean inGame;
     private ArrayList<Tetrimino> queue= new ArrayList<Tetrimino>();
     private Tetrimino holdP=null;
+    private boolean canHold=true;
 
     public Pieces(Engine e){
         this.engine=e;
@@ -36,6 +37,30 @@ public class Pieces {
 
     public ArrayList<Tetrimino> getQueue() {
         return queue;
+    }
+
+    public void hold(){
+        if(canHold) {
+            Tetrimino aux = this.holdP;
+            this.holdP = this.actualP;
+            int[][] pf = cleanPiece(this.engine.getPlayField(), actualP.getCoord());
+            this.engine.setPlayField(pf);
+            if (aux == null){
+                actualP = queue.remove(0);
+                queue.add(sbg.drawPiece());
+                actualP.spawn();
+            }
+            else {
+                this.actualP = aux;
+                this.actualP.spawn();
+                nextStep();
+            }
+        }
+        canHold = false;
+    }
+
+    public Tetrimino getHoldP() {
+        return holdP;
     }
 
     public void nextStep(){
@@ -105,6 +130,7 @@ public class Pieces {
 
     public void nextPiece() {
         checkMat();
+        canHold=true;
         if(this.inGame) {
             actualP = queue.remove(0);
             queue.add(sbg.drawPiece());

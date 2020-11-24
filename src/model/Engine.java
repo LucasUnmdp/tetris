@@ -94,6 +94,9 @@ public class Engine implements KeyListener {
             case KeyEvent.VK_Z:
                 this.piece.rot("counterclockwise");
                 break;
+            case KeyEvent.VK_SHIFT:
+                this.piece.hold();
+                break;
         }
     }
 

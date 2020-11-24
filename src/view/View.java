@@ -70,6 +70,7 @@ public class View extends JPanel {
     private void paintStage(Graphics g){
         int [][] m = eng.getPlayField();
         ArrayList<Tetrimino> queue=this.eng.getPiece().getQueue();
+        Tetrimino h=this.eng.getPiece().getHoldP();
         g.setColor(Color.GRAY);
         for(int i=2; i< m.length;i++){
             for(int j=0; j<m[0].length;j++){
@@ -80,5 +81,7 @@ public class View extends JPanel {
             Tetrimino t=queue.get(i);
             t.paintTetrimino(g,200+square*10+35,i*square*3+10);
         }
+        if(h!=null)
+            h.paintTetrimino(g,50,10);
     }
 }
