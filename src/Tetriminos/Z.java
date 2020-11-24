@@ -3,6 +3,9 @@ package Tetriminos;
 import exception.CantMoveException;
 import exception.CantRotException;
 import model.Coordinates;
+import view.View;
+
+import java.awt.*;
 
 public class Z extends Tetrimino{
 
@@ -10,6 +13,16 @@ public class Z extends Tetrimino{
         this.initialize();
         numberpiece=2;
     }
+
+    @Override
+    public void paintTetrimino(Graphics g, int width, int height) {
+        g.setColor(Color.RED);
+        g.fillRect(width,height, View.square,View.square);
+        g.fillRect(width+View.square,height,View.square,View.square);
+        g.fillRect(width+View.square,height+View.square,View.square,View.square);
+        g.fillRect(width+View.square*2,height+View.square,View.square,View.square);
+    }
+
     @Override
     public void spawn() {
         coord[0].setCoords(1,5);

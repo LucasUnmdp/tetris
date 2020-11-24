@@ -4,6 +4,8 @@ import Tetriminos.Tetrimino;
 import exception.CantMoveException;
 import exception.CantRotException;
 
+import java.util.ArrayList;
+
 /*
 "o"=1=Yellow
 "z"=2=red
@@ -19,12 +21,21 @@ public class Pieces {
     private Engine engine;
     private SBG sbg;
     private boolean inGame;
+    private ArrayList<Tetrimino> queue= new ArrayList<Tetrimino>();
+    private Tetrimino holdP=null;
 
     public Pieces(Engine e){
         this.engine=e;
         sbg= new SBG();
         this.inGame=true;
+        for(int i=0;i<5;i++){
+            queue.add(sbg.drawPiece());
+        }
         nextPiece();
+    }
+
+    public ArrayList<Tetrimino> getQueue() {
+        return queue;
     }
 
     public void nextStep(){
@@ -95,7 +106,8 @@ public class Pieces {
     public void nextPiece() {
         checkMat();
         if(this.inGame) {
-            actualP = sbg.drawPiece();
+            actualP = queue.remove(0);
+            queue.add(sbg.drawPiece());
             actualP.spawn();
             int[][]pf=drawPiece(engine.getPlayField(),actualP.getCoord());
             engine.setPlayField(pf);

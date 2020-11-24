@@ -4,6 +4,8 @@ import exception.CantMoveException;
 import exception.CantRotException;
 import model.Coordinates;
 
+import java.awt.*;
+
 public abstract class Tetrimino {
     protected Coordinates [] coord;
     protected int center;
@@ -19,6 +21,8 @@ public abstract class Tetrimino {
     public int getNumberpiece() {
         return numberpiece;
     }
+
+    public abstract void paintTetrimino(Graphics g,int width, int height);
 
     public abstract void spawn();
 

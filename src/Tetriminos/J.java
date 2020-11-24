@@ -2,12 +2,24 @@ package Tetriminos;
 
 import exception.CantRotException;
 import model.Coordinates;
+import view.View;
+
+import java.awt.*;
 
 public class J extends Tetrimino{
 
     public J(){
         this.initialize();
         numberpiece=6;
+    }
+
+    @Override
+    public void paintTetrimino(Graphics g, int width, int height) {
+        g.setColor(Color.BLUE);
+        g.fillRect(width,height,View.square,View.square);
+        g.fillRect(width,height+View.square,View.square,View.square);
+        g.fillRect(width+View.square,height+View.square,View.square,View.square);
+        g.fillRect(width+View.square*2,height+View.square,View.square,View.square);
     }
 
     @Override

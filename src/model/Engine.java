@@ -22,6 +22,10 @@ public class Engine implements KeyListener {
         initializeThread();
     }
 
+    public Pieces getPiece() {
+        return piece;
+    }
+
     private void createWindow(){
         this.window= new JFrame("Tetris");
         window.addKeyListener(this);

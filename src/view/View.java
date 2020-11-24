@@ -1,14 +1,16 @@
 package view;
 
+import Tetriminos.Tetrimino;
 import model.Engine;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class View extends JPanel {
     private Engine eng;
     private boolean paint= true;
-    private int square=35;
+    public static int square=35;
 
     public View (Engine e, int width, int height){
         this.eng=e;
@@ -60,18 +62,23 @@ public class View extends JPanel {
                         g.setColor(Color.CYAN);
                 }
                 if(m[i][j]!=0)
-                    g.fillRect(j*square+100,i*square-(2*square),square,square);
+                    g.fillRect(j*square+200,i*square-(2*square),square,square);
             }
         }
     }
 
     private void paintStage(Graphics g){
         int [][] m = eng.getPlayField();
+        ArrayList<Tetrimino> queue=this.eng.getPiece().getQueue();
         g.setColor(Color.GRAY);
         for(int i=2; i< m.length;i++){
             for(int j=0; j<m[0].length;j++){
-                g.drawRect(j*square+100,i*square-(2*square),square,square);
+                g.drawRect(j*square+200,i*square-(2*square),square,square);
             }
+        }
+        for(int i=0;i<5;i++){
+            Tetrimino t=queue.get(i);
+            t.paintTetrimino(g,200+square*10+35,i*square*3+10);
         }
     }
 }
