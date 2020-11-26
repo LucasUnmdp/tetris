@@ -24,15 +24,23 @@ public class Pieces {
     private ArrayList<Tetrimino> queue= new ArrayList<Tetrimino>();
     private Tetrimino holdP=null;
     private boolean canHold=true;
+    private int currentLvl;
+    private int currentLines;
 
     public Pieces(Engine e){
         this.engine=e;
         sbg= new SBG();
+        this.currentLvl=1;
+        this.currentLines=0;
         this.inGame=true;
         for(int i=0;i<5;i++){
             queue.add(sbg.drawPiece());
         }
         nextPiece();
+    }
+
+    public int getCurrentLvl() {
+        return currentLvl;
     }
 
     public ArrayList<Tetrimino> getQueue() {
@@ -132,6 +140,12 @@ public class Pieces {
         checkMat();
         canHold=true;
         if(this.inGame) {
+            if(this.currentLines>=this.currentLvl*5){
+                this.currentLines-=currentLvl*5;
+                this.currentLvl++;
+                engine.moreDifficulty();
+                System.out.println("subi al nivel "+currentLvl);
+            }
             actualP = queue.remove(0);
             queue.add(sbg.drawPiece());
             actualP.spawn();
@@ -143,7 +157,7 @@ public class Pieces {
     private void checkMat()  {
         int[][] pf= engine.getPlayField();
         boolean line;
-        int j;
+        int j,cont=0;
         for (int i=1;i<22;i++){
             j=0;
             line=true;
@@ -152,12 +166,26 @@ public class Pieces {
                     line=false;
             }
             if(line){
+                cont++;
                 for(int y=i;y>0;y--){
                     for(int x=0;x<10;x++){
                         pf[y][x]=pf[y-1][x];
                     }
                 }
             }
+        }
+        switch (cont){
+            case 1:
+                this.currentLines++;
+                break;
+            case 2:
+                this.currentLines+=3;
+                break;
+            case 3:
+                this.currentLines+=5;
+                break;
+            case 4:
+                this.currentLines+=8;
         }
         for(j=0;j<10;j++){
             if(pf[0][j]!=0 || pf[1][j]!=0)

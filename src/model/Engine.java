@@ -17,7 +17,7 @@ public class Engine implements KeyListener {
 
     public Engine (){
         this.playField=new int[22][10];
-        this.vel=750;
+        this.vel=1000;
         createWindow();
         initializeThread();
     }
@@ -63,6 +63,7 @@ public class Engine implements KeyListener {
                     JOptionPane.showMessageDialog(null, "f", "Perdiste", JOptionPane.PLAIN_MESSAGE);
                     this.playField= new int[22][10];
                     this.piece = new Pieces(this);
+                    this.vel=1000;
             }
             }
         }).start();
@@ -89,11 +90,14 @@ public class Engine implements KeyListener {
                 this.piece.fastSteps();
                 break;
             case KeyEvent.VK_X:
+            case KeyEvent.VK_UP:
                 this.piece.rot("clockwise");
                 break;
             case KeyEvent.VK_Z:
+            case KeyEvent.VK_CONTROL:
                 this.piece.rot("counterclockwise");
                 break;
+            case KeyEvent.VK_C:
             case KeyEvent.VK_SHIFT:
                 this.piece.hold();
                 break;
@@ -104,7 +108,8 @@ public class Engine implements KeyListener {
     public void keyReleased(KeyEvent e) {
     }
 
-    public void setVel(int vel) {
-        this.vel = vel;
+    public void moreDifficulty() {
+        this.vel=(int)(Math.pow(0.8-((piece.getCurrentLvl()-1)*0.007),piece.getCurrentLvl()-1)*1000);
+        System.out.println(this.vel);
     }
 }
