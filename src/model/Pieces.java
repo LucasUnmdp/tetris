@@ -23,7 +23,7 @@ public class Pieces {
     private boolean inGame;
     private ArrayList<Tetrimino> queue= new ArrayList<Tetrimino>();
     private Tetrimino holdP=null;
-    private boolean canHold=true;
+    private boolean canHold=true,canMove=true;
     private int currentLvl;
     private int currentLines;
 
@@ -76,12 +76,21 @@ public class Pieces {
         Coordinates[] coords= actualP.getCopyCoord();
         try {
             actualP.nextStep(pf);
-            pf=cleanPiece(pf,coords);
-            pf=drawPiece(pf,actualP.getCoord());
+            this.canMove=true;
+            pf = cleanPiece(pf, coords);
+            pf = drawPiece(pf, actualP.getCoord());
             engine.setPlayField(pf);
         } catch (CantMoveException e) {
-            nextPiece();
+            if(canMove) {
+                engine.setLockDelay();
+                this.canMove = false;
+            }
+            else {
+                this.canMove = true;
+                nextPiece();
+            }
         }
+
     }
 
     public void fastSteps() {
@@ -144,7 +153,6 @@ public class Pieces {
                 this.currentLines-=currentLvl*5;
                 this.currentLvl++;
                 engine.moreDifficulty();
-                System.out.println("subi al nivel "+currentLvl);
             }
             actualP = queue.remove(0);
             queue.add(sbg.drawPiece());

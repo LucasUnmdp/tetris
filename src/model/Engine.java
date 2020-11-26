@@ -13,11 +13,11 @@ public class Engine implements KeyListener {
     private JFrame window;
     private View view;
     private Pieces piece;
-    private int vel;
+    private int vel,lockDelay=0;
 
     public Engine (){
         this.playField=new int[22][10];
-        this.vel=1000;
+        this.vel=200;
         createWindow();
         initializeThread();
     }
@@ -54,9 +54,12 @@ public class Engine implements KeyListener {
             while(true){
                 try {
                     this.piece.nextStep();
+                    System.out.println(this.lockDelay);
                     if(!this.piece.isInGame())
                         throw new LoseException("Perdiste capo");
-                    Thread.sleep(vel);
+                    Thread.sleep(vel+lockDelay);
+                    if(lockDelay!=0)
+                        lockDelay=0;
                 } catch (InterruptedException e){
                 }
                 catch(LoseException e){
@@ -72,6 +75,10 @@ public class Engine implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
 
+    }
+
+    public void setLockDelay() {
+        this.lockDelay = 500;
     }
 
     @Override
@@ -109,7 +116,7 @@ public class Engine implements KeyListener {
     }
 
     public void moreDifficulty() {
-        this.vel=(int)(Math.pow(0.8-((piece.getCurrentLvl()-1)*0.007),piece.getCurrentLvl()-1)*1000);
-        System.out.println(this.vel);
+        if(piece.getCurrentLvl()<16)
+            this.vel=(int)(Math.pow(0.8-((piece.getCurrentLvl()-1)*0.007),piece.getCurrentLvl()-1)*1000);
     }
 }
