@@ -24,14 +24,15 @@ public class Pieces {
     private ArrayList<Tetrimino> queue= new ArrayList<Tetrimino>();
     private Tetrimino holdP=null;
     private boolean canHold=true,canMove=true;
-    private int currentLvl;
-    private int currentLines;
+    private int currentLvl,currentLines,score,combo;
 
     public Pieces(Engine e){
         this.engine=e;
         sbg= new SBG();
         this.currentLvl=1;
         this.currentLines=0;
+        this.score=0;
+        this.combo=0;
         this.inGame=true;
         for(int i=0;i<5;i++){
             queue.add(sbg.drawPiece());
@@ -41,6 +42,10 @@ public class Pieces {
 
     public int getCurrentLvl() {
         return currentLvl;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public ArrayList<Tetrimino> getQueue() {
@@ -99,6 +104,7 @@ public class Pieces {
         Coordinates[] coords= actualP.getCopyCoord();
         while(flag){
             try {
+                score+=2;
                 actualP.nextStep(pf);
             } catch (CantMoveException e) {
                 pf=cleanPiece(pf,coords);
@@ -135,6 +141,8 @@ public class Pieces {
     public void move(String direction){
         int[][] pf= engine.getPlayField();
         Coordinates[] coords=actualP.getCopyCoord();
+        if(direction.equals("down"))
+            score++;
         try {
             actualP.move(pf,direction);
             pf=cleanPiece(pf,coords);
@@ -182,18 +190,31 @@ public class Pieces {
                 }
             }
         }
-        switch (cont){
-            case 1:
-                this.currentLines++;
-                break;
-            case 2:
-                this.currentLines+=3;
-                break;
-            case 3:
-                this.currentLines+=5;
-                break;
-            case 4:
-                this.currentLines+=8;
+        if(cont>0) {
+            combo++;
+            switch (cont) {
+                case 1:
+                    this.currentLines++;
+                    score += 100 * this.currentLvl;
+                    break;
+                case 2:
+                    this.currentLines += 3;
+                    score += 300 * this.currentLvl;
+                    break;
+                case 3:
+                    this.currentLines += 5;
+                    score += 500 * this.currentLvl;
+                    break;
+                case 4:
+                    this.currentLines += 8;
+                    score += 800 * this.currentLvl;
+                    break;
+            }
+        }else{
+            if(combo>0) {
+                score += 50 * combo * currentLvl;
+                combo = 0;
+            }
         }
         for(j=0;j<10;j++){
             if(pf[0][j]!=0 || pf[1][j]!=0)

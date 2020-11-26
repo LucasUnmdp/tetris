@@ -17,7 +17,7 @@ public class Engine implements KeyListener {
 
     public Engine (){
         this.playField=new int[22][10];
-        this.vel=200;
+        this.vel=1000;
         createWindow();
         initializeThread();
     }
@@ -54,7 +54,6 @@ public class Engine implements KeyListener {
             while(true){
                 try {
                     this.piece.nextStep();
-                    System.out.println(this.lockDelay);
                     if(!this.piece.isInGame())
                         throw new LoseException("Perdiste capo");
                     Thread.sleep(vel+lockDelay);
@@ -63,7 +62,7 @@ public class Engine implements KeyListener {
                 } catch (InterruptedException e){
                 }
                 catch(LoseException e){
-                    JOptionPane.showMessageDialog(null, "f", "Perdiste", JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Score:"+ piece.getScore(), "You Lost", JOptionPane.PLAIN_MESSAGE);
                     this.playField= new int[22][10];
                     this.piece = new Pieces(this);
                     this.vel=1000;

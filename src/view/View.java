@@ -77,6 +77,9 @@ public class View extends JPanel {
                 g.drawRect(j*square+200,i*square-(2*square),square,square);
             }
         }
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+        g.drawString("Lvl: "+String.valueOf(this.eng.getPiece().getCurrentLvl()),10,670);
+        g.drawString("Score: "+String.valueOf(this.eng.getPiece().getScore()),10,700);
         for(int i=0;i<5;i++){
             Tetrimino t=queue.get(i);
             t.paintTetrimino(g,200+square*10+35,i*square*3+10);
