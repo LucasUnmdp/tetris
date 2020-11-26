@@ -86,5 +86,10 @@ public class View extends JPanel {
         }
         if(h!=null)
             h.paintTetrimino(g,50,10);
+        g.setColor(Color.WHITE);
+        for(int i=0;i<5;i++){
+            g.drawRect(200+square*10+35,i*square*3+10,4*square,3*square);
+        }
+        g.drawRect(50,10,4*square,3*square);
     }
 }
